@@ -1,0 +1,11 @@
+function e=symmetric_epipolar_distance(u1,u2,F)
+l2 = F*u1;
+l1 = F'*u2;
+ejs= u2(:).*l2(:);
+l11s = l1(1:3:end);
+l12s = l1(2:3:end);
+l21s = l2(1:3:end);
+l22s = l2(2:3:end);
+scales = 1./sqrt(l11s.^2+l12s.^2)+1./sqrt(l21s.^2+l22s.^2);
+temp = reshape(ejs,3,size(ejs,1)/3);
+e  = sum(temp).*scales;  
