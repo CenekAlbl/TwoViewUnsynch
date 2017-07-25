@@ -72,6 +72,9 @@ for k = 1:rounds_iter
     offset2 = offset2-step(r)/fps2*dts(r);
     skipped = 0;
     r = r+1;
+    if(verbose)
+        verbose_fn(sprintf('STEP ACCEPTED - current offset2 = %f',offset2));
+    end
     if(update_gui)
        gui_update_fn(offset2); 
     end

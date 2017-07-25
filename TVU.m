@@ -426,7 +426,7 @@ update_sliders(handles,hObject);
 update_labels(handles,hObject);
 guidata(hObject, handles);
 
-function set_offset(handles,hObject,offset,sequence_id)
+function handles = set_offset(handles,hObject,offset,sequence_id)
 if(sequence_id==1)
     handles.data.offset1 = offset;
 else
@@ -508,10 +508,10 @@ handles.status_bar.String = [ {msg}; handles.status_bar.String];
 
 function iteration_update(handles,hObject,offset2)
 if(offset2<0)
-    set_offset(handles,hObject,0,2);
+    handles = set_offset(handles,hObject,0,2);
     set_offset(handles,hObject,-offset2,1);
 else
-    set_offset(handles,hObject,offset2,2);
+    handles = set_offset(handles,hObject,offset2,2);
     set_offset(handles,hObject,0,1);
 end
 
