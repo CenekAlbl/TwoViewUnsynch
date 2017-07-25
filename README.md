@@ -10,5 +10,15 @@ Synchronizes two image sequences based on tracks provided by the user or compute
 ### Output
 * The time offset between the two sequences.
 
+### Track file format
+```
+n1 id11 x11 y11 id12 x12 y12 ... n2 id21 x21 y21 id22 x22 y22 ...
+```
+Each line is one track
+* n1 - number of image points in sequence 1 for this track
+* id11 - frame in which image point 1 appeared in sequence 1
+* x11, y11 - image coordinates
+etc.
+
 ### Notes
 Images must contain movement. The movement should span more frames than the amount of desychnronization
