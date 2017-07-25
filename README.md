@@ -11,4 +11,4 @@ Synchronizes two image sequences based on tracks provided by the user or compute
 * The time offset between the two sequences.
 
 ### Notes
-Images must contain movement. The movement should span more frames than the amount of desuchnronization
+Images must contain movement. The movement should span more frames than the amount of desychnronization
