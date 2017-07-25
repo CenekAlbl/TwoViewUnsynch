@@ -18,7 +18,8 @@ Each line is one track
 * n1 - number of image points in sequence 1 for this track
 * id11 - frame in which image point 1 appeared in sequence 1
 * x11, y11 - image coordinates
-etc.
+* n2 number of image points in sequence 2 for this track
+* etc.
 
 ### Notes
 Images must contain movement. The movement should span more frames than the amount of desychnronization
