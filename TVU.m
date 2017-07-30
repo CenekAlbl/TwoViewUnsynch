@@ -58,6 +58,8 @@ handles.output = hObject;
 % Program data
 handles.data.imcell1 = {};
 handles.data.imcell2 = {};
+handles.data.video1 = [];
+handles.data.video2 = [];
 handles.data.nframes1 = 0;
 handles.data.nframes2 = 0;
 handles.data.currframe1 = 0;
@@ -206,20 +208,18 @@ function pushbutton1_Callback(hObject, eventdata, handles)
             for i = 1:length(handles.data.imcell1)
                 handles.data.imcell1{i} = imread(strcat(pathname, '\', filenames{i}));
             end
+            handles.data.imw1 = size(handles.data.imcell1{1},2);
+            handles.data.imh1 = size(handles.data.imcell1{1},1);
+            handles.data.nframes1 = numel(handles.data.imcell1);
         else
-            v = VideoReader([pathname, filenames]);
-            vHeight = v.Height;
-            vWidth = v.Width;
-            i = 1;
-            while hasFrame(v)
-                handles.data.imcell1{i} = readFrame(v);
-                i = i + 1;
-            end
+            handles.data.video1 = VideoReader([pathname, filenames]);
+            handles.data.imw1 = handles.data.video1.Width;
+            handles.data.imh1 = handles.data.video1.Height;
+            handles.data.nframes1 = handles.data.video1.NumberOfFrames;
         end
-    handles.data.nframes1 = numel(handles.data.imcell1);
+    
     handles.data.currframe1 = 1;
-    handles.data.imw1 = size(handles.data.imcell1{1},2);
-    handles.data.imh1 = size(handles.data.imcell1{1},1);
+    
     update_sliders(handles,hObject);
     handles.indexSlider1 = 1;
     handles.indexSlider3 = 1;
@@ -236,26 +236,21 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)    
     [filenames, pathname] = uigetfile({'*.*'}, 'Pick MP4 video or image sequence', 'MultiSelect', 'on');
     if(length(filenames)~=0)
-        if iscell(filenames)
-
+       if iscell(filenames)
             handles.data.imcell2 = cell(1,length(filenames));
-            for i = 1:length(handles.data.imcell2)
+            for i = 1:length(handles.data.imcell1)
                 handles.data.imcell2{i} = imread(strcat(pathname, '\', filenames{i}));
             end
-        elseif(filenames~=0)
-            v = VideoReader([pathname, filenames]);
-            vHeight = v.Height;
-            vWidth = v.Width;
-            i = 1;
-            while hasFrame(v)
-                handles.data.imcell2{i} = readFrame(v);
-                i = i + 1;
-            end            
-        end
-        handles.data.nframes2 = numel(handles.data.imcell2);
+            handles.data.imw2 = size(handles.data.imcell2{1},2);
+            handles.data.imh2 = size(handles.data.imcell2{1},1);
+            handles.data.nframes2 = numel(handles.data.imcell2);
+        else
+            handles.data.video2 = VideoReader([pathname, filenames]);
+            handles.data.imw2 = handles.data.video2.Width;
+            handles.data.imh2 = handles.data.video2.Height;
+            handles.data.nframes2 = handles.data.video2.NumberOfFrames;
+       end
         handles.data.currframe2 = 1;
-        handles.data.imw2 = size(handles.data.imcell2{1},2);
-        handles.data.imh2 = size(handles.data.imcell2{1},1);
         update_sliders(handles,hObject);
         handles.indexSlider2 = 1;
         handles.indexSlider3 = 1;
@@ -370,9 +365,13 @@ cla(handles.axes2);
 cla(handles.axes1);
 if(~isempty(handles.data.imcell1)&&handles.data.currframe1~=0)
     imshow(handles.data.imcell1{handles.data.currframe1}, 'Parent', handles.axes1);
+elseif(~isempty(handles.data.video1)&&handles.data.currframe1~=0)
+    imshow(read(handles.data.video1,handles.data.currframe1), 'Parent', handles.axes1);
 end
 if(~isempty(handles.data.imcell2)&&handles.data.currframe2~=0)
     imshow(handles.data.imcell2{handles.data.currframe2}, 'Parent', handles.axes2);
+elseif(~isempty(handles.data.video2)&&handles.data.currframe2~=0)
+    imshow(read(handles.data.video2,handles.data.currframe2), 'Parent', handles.axes2);
 end
 xlim(handles.axes1,[0 handles.data.imw1]);
 ylim(handles.axes1,[0 handles.data.imh1]);
