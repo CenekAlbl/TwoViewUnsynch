@@ -22,7 +22,7 @@ function varargout = TVU(varargin)
 
 % Edit the above text to modify the response to help TVU
 
-% Last Modified by GUIDE v2.5 24-Jul-2017 10:24:59
+% Last Modified by GUIDE v2.5 10-Nov-2018 20:03:44
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -715,3 +715,20 @@ function edit_kmin_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in pushbuttonSynchronizeUsingH.
+function pushbuttonSynchronizeUsingH_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbuttonSynchronizeUsingH (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+thr = 2;
+rounds_ransac = 500;
+rounds_iter = 50;
+
+kmax = 6;
+kmin = 0;
+offset2 = 0;
+[Htres,dts,offset2,Ht_inliers,corresp,emin_Ht,step,info] = compute_Ht_iter(handles.data.tracks,handles.data.fps1,handles.data.fps2,handles.data.offset1,handles.data.offset2,handles.options.ransac_treshold,handles.options.ransac_rounds,handles.options.max_iter,handles.options.kmax,handles.options.kmin,@(x)status_msg(handles,x),@(x)iteration_update(handles,hObject,x));
+status_msg(handles,sprintf('Found offset for sequence 2 %fs',offset2));
+
